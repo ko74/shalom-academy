@@ -1,0 +1,593 @@
+@import "tailwindcss";
+
+/* ==================================================================== */
+/*  1. TOKENS                                                            */
+/*  Every colour, duration, easing and type step lives here. If you are  */
+/*  matching another site, this block is the only file you need to edit. */
+/* ==================================================================== */
+@theme {
+  /* --- Colour ----------------------------------------------------- */
+  --color-ink: #0b2239;
+  --color-ink-700: #143a5f;
+  --color-ink-500: #24578a;
+  --color-ink-300: #6d8fb0; /* decorative only — never used for text */
+  --color-sky: #2f7fc0;
+  --color-sky-soft: #dceaf6;
+  --color-lime: #8cc63f;
+  --color-lime-dark: #547f1b; /* darkened so white text on it clears 4.5:1 */
+  --color-ember: #bf3d15; /* darkened so error text clears 4.5:1 on white and mist */
+  --color-mist: #edf1f5;
+  --color-mist-deep: #d9e2ea;
+  --color-paper: #ffffff;
+
+  /* --- Typeface --------------------------------------------------- */
+  --font-display: var(--font-outfit), "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Helvetica Neue", sans-serif;
+
+  /* --- Fluid type scale -------------------------------------------
+     Every step interpolates between a 360px and a 1440px viewport, so
+     nothing needs a breakpoint just to stop being the wrong size.      */
+  --text-step--1: clamp(0.82rem, 0.79rem + 0.13vw, 0.9rem);
+  --text-step-0: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --text-step-1: clamp(1.13rem, 1.05rem + 0.35vw, 1.3rem);
+  --text-step-2: clamp(1.35rem, 1.18rem + 0.74vw, 1.75rem);
+  --text-step-3: clamp(1.65rem, 1.33rem + 1.4vw, 2.4rem);
+  --text-step-4: clamp(2rem, 1.47rem + 2.35vw, 3.25rem);
+  --text-step-5: clamp(2.5rem, 1.6rem + 3.9vw, 4.5rem);
+  --text-step-6: clamp(2.9rem, 1.55rem + 6vw, 6rem);
+
+  /* --- Motion -----------------------------------------------------
+     Four curves, four durations. Nothing in the project invents its
+     own — that is what makes the whole page feel like one system.      */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --dur-fast: 220ms;
+  --dur-base: 420ms;
+  --dur-slow: 720ms;
+  --dur-slower: 1100ms;
+
+  /* --- Shape ------------------------------------------------------ */
+  --radius-card: 1.5rem;
+  --radius-pill: 999px;
+
+  /* --- Registered animations -------------------------------------- */
+  --animate-ken-burns: ken-burns 14s var(--ease-out-soft) forwards;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-soft) infinite;
+  --animate-float: float 6s var(--ease-in-out-soft) infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+}
+
+/* ==================================================================== */
+/*  2. KEYFRAMES                                                         */
+/* ==================================================================== */
+@keyframes ken-burns {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.16) translate3d(0, -1.5%, 0); }
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes shimmer {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(100%, 0, 0); }
+}
+
+/* ==================================================================== */
+/*  3. BASE                                                              */
+/* ==================================================================== */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    min-width: 0; /* stops flex/grid children forcing horizontal scroll */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem; /* keeps anchors clear of the fixed header */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Belt and braces against horizontal scroll: reveal animations translate
+       elements up to 2rem past their resting position before they're
+       revealed (see section 6), and `overflow-x: clip` on <body> alone does
+       not reliably stop that contributing to document.documentElement's
+       scrollWidth in every engine. Hidden on both html and body closes it
+       regardless of that propagation nuance. */
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip; /* redundant with html above, kept for older engines */
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: var(--text-step-5); }
+  h2 { font-size: var(--text-step-4); }
+  h3 { font-size: var(--text-step-2); }
+  h4 { font-size: var(--text-step-1); }
+
+  p { text-wrap: pretty; }
+
+  img, svg, video, canvas, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* --- Focus ------------------------------------------------------
+     One ring, everywhere, on the accent. Two layers so it stays
+     visible on both the light and the dark ground.                   */
+  /* Two-tone. A single lime ring only clears 2.05:1 against white, which
+     fails the 3:1 required of a focus indicator. The dark inner outline
+     carries the contrast on light grounds (16.1:1) and the lime halo
+     carries it on dark ones (7.9:1), so one rule works everywhere. */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 6px;
+    box-shadow:
+      0 0 0 2px var(--color-paper),
+      0 0 0 6px var(--color-lime);
+  }
+  /* On the dark ground the layers invert */
+  .bg-ink :focus-visible,
+  .bg-ink-700 :focus-visible,
+  [data-ground="dark"] :focus-visible {
+    outline-color: var(--color-lime);
+    box-shadow:
+      0 0 0 2px var(--color-ink),
+      0 0 0 6px var(--color-lime);
+  }
+  :focus:not(:focus-visible) { outline: none; }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  a, button, [role="button"], summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-300) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--color-ink-300);
+    border-radius: var(--radius-pill);
+  }
+}
+
+/* ==================================================================== */
+/*  4. LAYOUT UTILITIES                                                  */
+/* ==================================================================== */
+@utility shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 82rem;
+  padding-inline: clamp(1.15rem, 0.6rem + 2.4vw, 2.5rem);
+}
+
+@utility bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
+@utility scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==================================================================== */
+/*  5. PSEUDO-ELEMENT EFFECTS                                            */
+/*  Each is built on ::before / ::after so the markup stays clean and    */
+/*  the effect is one class rather than a wrapper span.                  */
+/* ==================================================================== */
+
+/* --- Underline wipes in from the left, out to the right ------------ */
+@utility link-underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--dur-base) var(--ease-out-soft);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+/* --- Same, but the rule is the accent rather than the text ---------- */
+@utility link-underline-accent {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background: var(--color-lime);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--dur-base) var(--ease-out-soft);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+/* --- Button fill sweeping up from the bottom edge ------------------ */
+@utility btn-sweep {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--sweep-color, var(--color-lime));
+    transform: translate3d(0, 101%, 0);
+    transition: transform var(--dur-base) var(--ease-out-soft);
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --- Button fill growing from a circle at the left ----------------- */
+@utility btn-bloom {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    z-index: -1;
+    aspect-ratio: 1;
+    width: 130%;
+    border-radius: 50%;
+    background: var(--sweep-color, var(--color-lime));
+    transform: translate3d(-50%, -50%, 0) scale(0);
+    transition: transform var(--dur-slow) var(--ease-out-soft);
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    transform: translate3d(-28%, -50%, 0) scale(1);
+  }
+}
+
+/* --- Accent bar growing above a section heading -------------------- */
+@utility rule-above {
+  position: relative;
+  padding-top: 1.25rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 3.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-lime);
+    transform: scaleX(var(--rule-scale, 0));
+    transform-origin: left center;
+    transition: transform var(--dur-slow) var(--ease-out-soft) var(--rule-delay, 120ms);
+  }
+}
+
+/* --- Image frame: a panel wipes off as the image enters view -------- */
+@utility img-wipe {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--wipe-color, var(--color-mist));
+    transform: translate3d(0, var(--wipe-offset, 0), 0);
+    transition: transform var(--dur-slower) var(--ease-out-soft) var(--wipe-delay, 0ms);
+  }
+}
+
+/* --- Card: accent rule drawing along the bottom on hover ----------- */
+@utility card-rule {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    background: var(--color-lime);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-base) var(--ease-out-soft);
+  }
+
+  &:hover::after,
+  &:focus-within::after {
+    transform: scaleX(1);
+  }
+}
+
+/* --- Card: gradient scrim that deepens on hover -------------------- */
+@utility card-scrim {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-ink) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 42%,
+      transparent 78%
+    );
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      var(--color-ink) 12%,
+      color-mix(in srgb, var(--color-ink) 72%, transparent) 60%,
+      color-mix(in srgb, var(--color-ink) 25%, transparent) 100%
+    );
+    transition: opacity var(--dur-slow) var(--ease-out-soft);
+  }
+
+  &:hover::after,
+  &:focus-within::after {
+    opacity: 1;
+  }
+}
+
+/* --- Loading shimmer ----------------------------------------------- */
+@utility shimmer {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, white 45%, transparent),
+      transparent
+    );
+    animation: var(--animate-shimmer);
+  }
+}
+
+@utility edge-slant {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.5vw), 0 100%);
+}
+
+/* ==================================================================== */
+/*  6. SCROLL REVEAL                                                     */
+/*  Driven by data-reveal / data-revealed, set by <Reveal>. Keeping the  */
+/*  transitions in CSS rather than inline styles lets a child stagger    */
+/*  off its parent's state with no extra JavaScript.                     */
+/* ==================================================================== */
+[data-reveal] {
+  --reveal-delay: 0ms;
+  --reveal-duration: var(--dur-slow);
+  transition:
+    opacity var(--reveal-duration) var(--ease-out-soft) var(--reveal-delay),
+    transform var(--reveal-duration) var(--ease-out-soft) var(--reveal-delay),
+    clip-path var(--reveal-duration) var(--ease-out-soft) var(--reveal-delay),
+    filter var(--reveal-duration) var(--ease-out-soft) var(--reveal-delay);
+  will-change: opacity, transform;
+}
+
+[data-reveal="up"]     { opacity: 0; transform: translate3d(0, 2rem, 0); }
+[data-reveal="down"]   { opacity: 0; transform: translate3d(0, -2rem, 0); }
+[data-reveal="left"]   { opacity: 0; transform: translate3d(-2rem, 0, 0); }
+[data-reveal="right"]  { opacity: 0; transform: translate3d(2rem, 0, 0); }
+[data-reveal="fade"]   { opacity: 0; }
+[data-reveal="scale"]  { opacity: 0; transform: scale(0.94); }
+[data-reveal="rise"]   { opacity: 0; transform: translate3d(0, 3.5rem, 0) scale(0.98); }
+[data-reveal="blur"]   { opacity: 0; filter: blur(12px); transform: translate3d(0, 1rem, 0); }
+
+/* Masked wipes — the element is revealed rather than moved */
+[data-reveal="mask-up"]    { clip-path: inset(100% 0 0 0); }
+[data-reveal="mask-down"]  { clip-path: inset(0 0 100% 0); }
+[data-reveal="mask-left"]  { clip-path: inset(0 100% 0 0); }
+[data-reveal="mask-right"] { clip-path: inset(0 0 0 100%); }
+
+/* Text rising out of its own line box */
+[data-reveal="line"] {
+  display: block;
+  overflow: hidden;
+}
+[data-reveal="line"] > * {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform var(--dur-slow) var(--ease-out-soft) var(--reveal-delay);
+}
+
+[data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: inset(0 0 0 0);
+}
+[data-revealed="true"][data-reveal="line"] > * {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Pseudo-element effects that key off the same reveal state */
+[data-revealed="true"] .rule-above,
+.rule-above[data-revealed="true"] { --rule-scale: 1; }
+
+.img-wipe[data-revealed="true"]::after,
+[data-revealed="true"] .img-wipe::after { --wipe-offset: -101%; }
+
+/* Stagger: children come in one after another off the parent's state */
+[data-stagger] > * {
+  --stagger-step: 70ms;
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-soft),
+    transform var(--dur-slow) var(--ease-out-soft);
+}
+[data-stagger][data-revealed="true"] > * {
+  opacity: 1;
+  transform: none;
+}
+[data-stagger] > *:nth-child(1)  { transition-delay: calc(var(--stagger-step) * 0); }
+[data-stagger] > *:nth-child(2)  { transition-delay: calc(var(--stagger-step) * 1); }
+[data-stagger] > *:nth-child(3)  { transition-delay: calc(var(--stagger-step) * 2); }
+[data-stagger] > *:nth-child(4)  { transition-delay: calc(var(--stagger-step) * 3); }
+[data-stagger] > *:nth-child(5)  { transition-delay: calc(var(--stagger-step) * 4); }
+[data-stagger] > *:nth-child(6)  { transition-delay: calc(var(--stagger-step) * 5); }
+[data-stagger] > *:nth-child(7)  { transition-delay: calc(var(--stagger-step) * 6); }
+[data-stagger] > *:nth-child(8)  { transition-delay: calc(var(--stagger-step) * 7); }
+[data-stagger] > *:nth-child(9)  { transition-delay: calc(var(--stagger-step) * 8); }
+[data-stagger] > *:nth-child(10) { transition-delay: calc(var(--stagger-step) * 9); }
+[data-stagger] > *:nth-child(n + 11) { transition-delay: calc(var(--stagger-step) * 10); }
+
+/* ==================================================================== */
+/*  7. REDUCED MOTION                                                    */
+/*  Everything above resolves to its finished state instantly. Nothing   */
+/*  is left hidden — that is the failure mode to watch for.              */
+/* ==================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+  }
+  [data-reveal="line"] > * { transform: none !important; }
+  .img-wipe::after { display: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .backdrop-blur-sm {
+    backdrop-filter: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .card-rule::after,
+  .link-underline::after,
+  .link-underline-accent::after {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+  :focus-visible { outline: 3px solid Highlight; }
+}
+
+/* Coarse pointers cannot hover — never hide content behind an
+   interaction the device is unable to make. */
+@media (hover: none) {
+  .reveal-on-hover {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ==================================================================== */
+/*  8. PRINT                                                             */
+/* ==================================================================== */
+@media print {
+  [data-reveal],
+  [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .no-print { display: none !important; }
+  body { color: #000; background: #fff; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+}
