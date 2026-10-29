@@ -182,11 +182,9 @@ export function ContactForm() {
             <span>
               <span className="block font-semibold">Campus</span>
               <span className="mt-1 block text-white/65">
-                Kattenberg 19
+                The Mickbess School - Appolonia
                 <br />
-                B-1170 Watermael-Boitsfort
-                <br />
-                Brussels, Belgium
+                Appolonia
               </span>
             </span>
           </li>
@@ -194,11 +192,23 @@ export function ContactForm() {
             <Phone className="mt-1 size-5 shrink-0 text-lime" />
             <span>
               <span className="block font-semibold">Reception</span>
-              <a href="tel:+3226614211" className="link-underline-accent mt-1 inline-block text-white/65">
-                +32 2 661 42 11
+              <a href="tel:+233000000000" className="link-underline-accent mt-1 inline-block text-white/65">
+                +233 0 000 0000
               </a>
               <span className="mt-1 block text-sm text-white/60">
                 08:00 – 17:00 on school days
+              </span>
+            </span>
+          </li>
+          <li className="flex gap-4">
+            <Phone className="mt-1 size-5 shrink-0 text-lime" />
+            <span>
+              <span className="block font-semibold">WhatsApp</span>
+              <a href="https://wa.me/233000000000" className="link-underline-accent mt-1 inline-block text-white/65">
+                +233 0 000 0000
+              </a>
+              <span className="mt-1 block text-sm text-white/60">
+                Message us anytime
               </span>
             </span>
           </li>
@@ -207,10 +217,10 @@ export function ContactForm() {
             <span>
               <span className="block font-semibold">Admissions</span>
               <a
-                href="mailto:admissions@example.com"
+                href="mailto:admissions@mickbess.edu"
                 className="link-underline-accent mt-1 inline-block text-white/65"
               >
-                admissions@example.com
+                admissions@mickbess.edu
               </a>
             </span>
           </li>

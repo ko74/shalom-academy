@@ -206,11 +206,11 @@ export function NewsEventsCanvas({ open, onClose }: CanvasProps) {
 
             <footer className="border-t border-white/10 px-6 py-5 sm:px-8">
               <Link
-                href={tab === "news" ? "/about/news" : "/about/calendar"}
+                href="/news-events"
                 onClick={onClose}
                 className="group inline-flex items-center gap-2 font-[family-name:var(--font-display)] font-semibold text-lime"
               >
-                {tab === "news" ? "View all news" : "View full calendar"}
+                View all news & events
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </footer>

@@ -1,19 +1,21 @@
 import { mainNav, portalNav } from "@/lib/data/navigation";
 import type { PageContent } from "./types";
 import { aboutPages } from "./about";
+import { academicsPages } from "./academics";
 import { admissionsPages } from "./admissions";
-import { learningPages } from "./learning";
-import { studentLifePages } from "./student-life";
-import { otherPages } from "./other";
+import { facilitiesPages } from "./facilities";
+import { newsEventsPages } from "./news-events";
+import { contactPages } from "./contact";
 
 export type { PageContent, Block, LinkRef } from "./types";
 
 export const allPages: PageContent[] = [
   ...aboutPages,
+  ...academicsPages,
   ...admissionsPages,
-  ...learningPages,
-  ...studentLifePages,
-  ...otherPages,
+  ...facilitiesPages,
+  ...newsEventsPages,
+  ...contactPages,
 ];
 
 const byHref = new Map(allPages.map((page) => [page.href, page]));

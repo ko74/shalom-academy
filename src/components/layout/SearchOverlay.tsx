@@ -22,7 +22,7 @@ const index = mainNav.flatMap((section) => [
   })),
 ]);
 
-const suggestions = ["Tuition & Fees", "Apply", "School Calendar", "Current Openings"];
+const suggestions = ["About Us", "Academics", "Admissions", "Facilities & Gallery", "News & Events", "Contact Us"];
 
 export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState("");

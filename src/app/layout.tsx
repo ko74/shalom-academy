@@ -24,19 +24,19 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://example.com"),
   title: {
-    default: "International School of Brussels | Preschool to IB Diploma",
-    template: "%s | International School of Brussels",
+    default: "The Mickbess School - Appolonia | Welcoming every child",
+    template: "%s | The Mickbess School - Appolonia",
   },
   description:
-    "An English-language international school in Brussels for more than 1,300 students, from Preschool through to the IB Diploma.",
+    "The Mickbess School - Appolonia is a welcoming school community where every child is known, supported, and challenged to grow.",
   openGraph: {
     type: "website",
-    siteName: "International School of Brussels",
-    title: "International School of Brussels | Preschool to IB Diploma",
+    siteName: "The Mickbess School - Appolonia",
+    title: "The Mickbess School - Appolonia | Welcoming every child",
     description:
-      "An English-language international school in Brussels for more than 1,300 students, from Preschool through to the IB Diploma.",
+      "The Mickbess School - Appolonia is a welcoming school community where every child is known, supported, and challenged to grow.",
   },
-  robots: { index: false, follow: false }, // educational rebuild — keep it out of search
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

@@ -1,8 +1,9 @@
-# Shalom Academy — Next.js 15 + Tailwind CSS 4 build
+# The Mickbess School - Appolonia — Next.js 15 + Tailwind CSS 4 build
 
-A production-quality rebuild of the International School of Brussels website
-(`isb.be`) as a Next.js 15 App Router project styled with Tailwind CSS 4:
-the full homepage plus all 48 inner pages.
+A production-quality school website for The Mickbess School - Appolonia,
+built as a Next.js 15 App Router project styled with Tailwind CSS 4:
+the homepage plus the core school pages (About, Academics, Admissions,
+Facilities & Gallery, News & Events, Contact).
 
 Built as a learning exercise. Read the note at the bottom before you deploy it
 anywhere public.

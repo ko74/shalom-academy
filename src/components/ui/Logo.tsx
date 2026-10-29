@@ -19,7 +19,7 @@ export function Logo({ tone = "dark", compact = false, className }: LogoProps) {
   return (
     <Link
       href="/"
-      aria-label="International School of Brussels — home"
+      aria-label="The Mickbess School - Appolonia — home"
       className={cn("group flex items-center gap-3", className)}
     >
       <span className="relative block shrink-0">
@@ -53,10 +53,10 @@ export function Logo({ tone = "dark", compact = false, className }: LogoProps) {
             text
           )}
         >
-          International School
+          The Mickbess School
         </span>
         <span className={cn("block text-[0.72rem] font-medium tracking-[0.18em]", sub)}>
-          of Brussels
+          - Appolonia
         </span>
       </span>
     </Link>

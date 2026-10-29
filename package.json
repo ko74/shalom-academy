@@ -2,7 +2,7 @@
     "name": "shalom-academy",
   "version": "1.0.0",
   "private": true,
-  "description": "Educational recreation of the International School of Brussels homepage, built with Next.js 15 + Tailwind CSS 4.",
+  "description": "The Mickbess School - Appolonia website, built with Next.js 15 + Tailwind CSS 4.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
